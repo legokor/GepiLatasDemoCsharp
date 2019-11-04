@@ -15,14 +15,13 @@ namespace GepiLatasDemo
     public partial class Form1 : Form
     {
         private string fileName = "Resources/rubik.jpg";
-        Mat src = null;
         public Form1()
         {
             InitializeComponent();
         }
         private void load_Click(object sender, EventArgs e)
         {
-            src = Cv2.ImRead(fileName);
+            Mat src = Cv2.ImRead(fileName);
 
             pictureBox1.Image = src.ToBitmap();
         }
@@ -33,8 +32,6 @@ namespace GepiLatasDemo
             Cv2.CvtColor(src, dst, ColorConversionCodes.BGRA2GRAY);
             pictureBox1.Image = dst.ToBitmap();
         }
-
-
 
         private void canny_Click(object sender, EventArgs e)
         {
