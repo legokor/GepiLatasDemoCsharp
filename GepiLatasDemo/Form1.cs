@@ -14,11 +14,31 @@ namespace GepiLatasDemo
 {
     public partial class Form1 : Form
     {
+        private ControlFactory controlFactory;
         private string fileName = "Resources/rubik.jpg";
+        Mat thresholdImage = null;
+        TrackBar trackBar = null;
+        Button LoadButton = null;
+        Button GrayButton = null;
+        Button CannyButton = null;
+
         public Form1()
         {
             InitializeComponent();
+            InitializeControls();
         }
+
+        private void TrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            if(thresholdImage == null)
+                thresholdImage = Cv2.ImRead(fileName);
+            Mat dst = new Mat();
+            Mat gray = new Mat();
+            Cv2.CvtColor(thresholdImage, gray, ColorConversionCodes.BGRA2GRAY);
+            Cv2.Threshold(gray, dst, trackBar.Value, 255, ThresholdTypes.Binary);
+            pictureBox1.Image = dst.ToBitmap();
+        }
+
         private void load_Click(object sender, EventArgs e)
         {
             Mat src = Cv2.ImRead(fileName);
@@ -46,6 +66,21 @@ namespace GepiLatasDemo
         {
             this.Width = pictureBox1.Location.X + pictureBox1.Width + 80;
             this.Height = pictureBox1.Location.Y + pictureBox1.Height + 100;
+        }
+        private void InitializeControls()
+        {
+            controlFactory = new ControlFactory(this);
+
+            LoadButton = controlFactory.AddButton("Load");
+            GrayButton = controlFactory.AddButton("Gray");
+            CannyButton = controlFactory.AddButton("Canny");
+            LoadButton.Click += load_Click;
+            GrayButton.Click += grayButton_Click;
+            CannyButton.Click += canny_Click;
+
+            trackBar = controlFactory.AddTrackBar();
+            trackBar.ValueChanged += TrackBar_ValueChanged;
+            trackBar.Maximum = 255;
         }
     }
 }
