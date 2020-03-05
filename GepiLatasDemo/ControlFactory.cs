@@ -44,12 +44,29 @@ namespace GepiLatasDemo
                 TabIndex = TabIndex++,
                 Text = text,
                 UseVisualStyleBackColor = true,
-                Size = new System.Drawing.Size(75, 23)
+                Size = new System.Drawing.Size(75, 30)
             };
 
             NextControlY = button.Location.Y + button.Height + VerticalPadding;
             form.Controls.Add(button);
             return button;
+        }
+
+        public void AddButton(string text, EventHandler onClick)
+        {
+            Button button = new Button
+            {
+                Name = $"button{++LastControlIndex}",
+                Location = new System.Drawing.Point { X = XCoordinate, Y = NextControlY },
+                TabIndex = TabIndex++,
+                Text = text,
+                UseVisualStyleBackColor = true,
+                Size = new System.Drawing.Size(75, 30)
+            };
+
+            NextControlY = button.Location.Y + button.Height + VerticalPadding;
+            form.Controls.Add(button);
+            button.Click += onClick;
         }
     }
 }

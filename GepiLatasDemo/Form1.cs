@@ -1,4 +1,5 @@
-﻿using OpenCvSharp;
+﻿using GepiLatasDemo.PipeFilter;
+using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,14 @@ namespace GepiLatasDemo
         Button LoadButton = null;
         Button GrayButton = null;
         Button CannyButton = null;
+        PipeFilterController pipeFilterController;
 
         public Form1()
         {
             InitializeComponent();
             InitializeControls();
+
+            pipeFilterController = new PipeFilterController(pictureBox1);
         }
 
         private void TrackBar_ValueChanged(object sender, EventArgs e)
@@ -71,6 +75,12 @@ namespace GepiLatasDemo
         {
             controlFactory = new ControlFactory(this);
 
+            controlFactory.AddButton("Load", (s, e) =>
+            {
+                pipeFilterController.Add(new FileLoader());
+            });
+
+            /*
             LoadButton = controlFactory.AddButton("Load");
             GrayButton = controlFactory.AddButton("Gray");
             CannyButton = controlFactory.AddButton("Canny");
@@ -81,6 +91,7 @@ namespace GepiLatasDemo
             trackBar = controlFactory.AddTrackBar();
             trackBar.ValueChanged += TrackBar_ValueChanged;
             trackBar.Maximum = 255;
+            */
         }
     }
 }
